@@ -1,0 +1,116 @@
+.catalog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.movie-counter {
+  padding: 12px 18px;
+  background: #171e34;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  color: #b49aff;
+}
+
+.filter-container {
+  max-width: 330px;
+  padding: 20px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: var(--fondo-secundario);
+}
+
+.movie-poster {
+  height: 210px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 40%, #7850ee66, transparent 55%),
+    linear-gradient(145deg, #242d4b, #101629);
+}
+
+.poster-icon {
+  font-size: 70px;
+  filter: drop-shadow(0 5px 15px #0008);
+}
+
+.poster-year {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #080b16cc;
+  padding: 5px 10px;
+  border-radius: 7px;
+  font-size: 12px;
+}
+
+.badge-larga {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+}
+
+.movie-info {
+  padding: 20px;
+}
+
+.movie-genre {
+  color: #aa91ff;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.movie-info h5 {
+  margin-top: 10px;
+  font-weight: 800;
+}
+
+.movie-info p {
+  font-size: 13px;
+  margin: 15px 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px 15px;
+  color: var(--texto-secundario);
+}
+
+.empty-state span {
+  font-size: 45px;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.modal-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  z-index: 1055;
+  background: #000b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.custom-modal {
+  width: 100%;
+  max-width: 480px;
+  background: #151d32;
+  padding: 30px;
+  border: 1px solid var(--borde);
+  border-radius: 18px;
+  box-shadow: 0 20px 80px #0009;
+}
+
+.close-modal {
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 22px;
+}

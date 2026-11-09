@@ -1,0 +1,186 @@
+
+<div class="main-container">
+
+  <div class="catalog-header">
+
+    <div>
+      <span class="hero-tag">TU COLECCIÓN DE CINE</span>
+
+      <h2 class="section-title mt-2">
+        Explora películas 🎬
+      </h2>
+
+      <p class="section-description">
+        Encuentra tu próxima película favorita y agrégala a una maratón.
+      </p>
+    </div>
+
+    <div class="movie-counter">
+      🎞️ {{ peliculasFiltradas.length }} películas
+    </div>
+
+  </div>
+
+  <div class="filter-container">
+
+    <div>
+      <label class="form-label">
+        Filtrar por género
+      </label>
+
+      <select
+        class="form-select cine-input"
+        (change)="filtrar($event)">
+
+        <option value="Todos">Todos los géneros</option>
+
+        @for (genero of generos; track genero) {
+          <option [value]="genero">
+            {{ genero }}
+          </option>
+        }
+
+      </select>
+    </div>
+
+  </div>
+
+  <div class="row g-4 mt-2">
+
+    @for (pelicula of peliculasFiltradas; track pelicula.id) {
+
+      <div class="col-sm-6 col-lg-4 col-xl-3">
+
+        <div class="cine-card movie-card">
+
+          <div class="movie-poster">
+
+            <span class="poster-icon">🎬</span>
+
+            <span class="poster-year">
+              {{ pelicula.anio }}
+            </span>
+
+            @if (pelicula.duracion > 150) {
+              <span class="badge-larga">
+                Larga duración
+              </span>
+            }
+
+          </div>
+
+          <div class="movie-info">
+
+            <span class="movie-genre">
+              {{ pelicula.genero }}
+            </span>
+
+            <h5>{{ pelicula.titulo }}</h5>
+
+            <p class="text-muted-cine">
+              ⏱️ {{ pelicula.duracion }} minutos
+            </p>
+
+            <button
+              class="btn-cine w-100"
+              (click)="seleccionar(pelicula)">
+              + Agregar a maratón
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    } @empty {
+
+      <div class="col-12">
+        <div class="empty-state">
+          <span>🎞️</span>
+          <h4>No encontramos películas</h4>
+          <p>Prueba con otro género.</p>
+        </div>
+      </div>
+
+    }
+
+  </div>
+
+</div>
+
+@if (seleccionada) {
+
+  <div class="modal-backdrop-custom" (click)="cerrarModal()">
+
+    <div class="custom-modal" (click)="$event.stopPropagation()">
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h4>Agregar a maratón</h4>
+
+        <button class="close-modal" (click)="cerrarModal()">
+          ✕
+        </button>
+
+      </div>
+
+      <p class="text-muted-cine">
+        Película seleccionada:
+      </p>
+
+      <h5>{{ seleccionada.titulo }}</h5>
+
+      @if (maratones.length === 0) {
+
+        <div class="empty-state">
+          <span>📋</span>
+          <h5>No tienes maratones</h5>
+          <p>Crea una maratón para guardar esta película.</p>
+
+          <a routerLink="/maratones" class="btn-cine">
+            Crear maratón
+          </a>
+        </div>
+
+      } @else {
+
+        <label class="form-label mt-3">
+          Selecciona una maratón
+        </label>
+
+        <select class="form-select cine-input"
+                [(ngModel)]="maratonSeleccionada">
+
+          <option value="">Selecciona una lista</option>
+
+          @for (maraton of maratones; track maraton.id) {
+            <option [value]="maraton.id">
+              {{ maraton.nombre }}
+            </option>
+          }
+
+        </select>
+
+        @if (mensaje) {
+          <div class="alert alert-warning mt-3">
+            {{ mensaje }}
+          </div>
+        }
+
+        <button class="btn-cine w-100 mt-4"
+                (click)="agregar()">
+          Confirmar película
+        </button>
+
+      }
+
+      <button class="btn-outline-cine w-100 mt-2"
+              (click)="cerrarModal()">
+        Cancelar
+      </button>
+
+    </div>
+  </div>
+
+}

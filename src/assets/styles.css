@@ -1,0 +1,7 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+body {
+  background: #f4f6f9;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}

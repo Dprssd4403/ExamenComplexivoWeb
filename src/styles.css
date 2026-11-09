@@ -1,1 +1,212 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+  --fondo: #080b16;
+  --fondo-secundario: #101629;
+  --tarjeta: #151d32;
+  --morado: #8857ff;
+  --morado-claro: #a78bfa;
+  --azul: #3997ff;
+  --texto: #f5f5ff;
+  --texto-secundario: #a3adc2;
+  --borde: rgba(255,255,255,.09);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: 'Inter', sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+button, input, select {
+  font-family: inherit;
+}
+
+.main-container {
+  max-width: 1250px;
+  margin: auto;
+  padding: 35px 24px;
+}
+
+.section-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.section-description {
+  color: var(--texto-secundario);
+  margin-bottom: 28px;
+}
+
+.cine-navbar {
+  background: rgba(13, 18, 34, .95);
+  border-bottom: 1px solid var(--borde);
+  padding: 17px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(15px);
+}
+
+.cine-logo {
+  font-size: 25px;
+  font-weight: 800;
+  color: white;
+}
+
+.cine-logo span {
+  color: var(--morado-claro);
+}
+
+.cine-link {
+  color: #b8c0d5;
+  padding: 10px 14px;
+  transition: .2s;
+  font-weight: 500;
+}
+
+.cine-link:hover,
+.cine-link.active {
+  color: white;
+}
+
+.btn-cine {
+  background: linear-gradient(110deg, #7850ee, #477ff4);
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-weight: 700;
+  transition: .25s;
+}
+
+.btn-cine:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px #7850ee55;
+  color: white;
+}
+
+.btn-outline-cine {
+  border: 1px solid #8857ff;
+  color: white;
+  background: transparent;
+  padding: 11px 20px;
+  border-radius: 10px;
+}
+
+.btn-outline-cine:hover {
+  background: #8857ff;
+  color: white;
+}
+
+.cine-card {
+  background: var(--tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  overflow: hidden;
+  height: 100%;
+  transition: .25s;
+}
+
+.cine-card:hover {
+  transform: translateY(-5px);
+  border-color: #8857ff88;
+  box-shadow: 0 12px 30px #0005;
+}
+
+.cine-input {
+  background: #101629;
+  border: 1px solid #303a54;
+  color: white;
+  border-radius: 10px;
+  padding: 13px;
+}
+
+.cine-input:focus {
+  background: #101629;
+  color: white;
+  border-color: var(--morado);
+  box-shadow: 0 0 0 3px #8857ff33;
+}
+
+.cine-input::placeholder {
+  color: #77829c;
+}
+
+.form-label {
+  color: #dce1f0;
+  font-weight: 600;
+}
+
+.text-muted-cine {
+  color: var(--texto-secundario);
+}
+
+.badge-larga {
+  background: #9d303d;
+  color: white;
+  padding: 7px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+}
+
+.modal-content {
+  background: #151d32;
+  color: white;
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+}
+
+.modal-header,
+.modal-footer {
+  border-color: var(--borde);
+}
+
+.btn-close {
+  filter: invert(1);
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: white;
+  --bs-table-border-color: var(--borde);
+}
+
+.alert {
+  border-radius: 10px;
+}
+
+footer {
+  color: var(--texto-secundario);
+  border-top: 1px solid var(--borde);
+  padding: 25px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+@media(max-width: 768px) {
+  .main-container {
+    padding: 25px 15px;
+  }
+
+  .section-title {
+    font-size: 23px;
+  }
+
+  .cine-navbar .container {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}

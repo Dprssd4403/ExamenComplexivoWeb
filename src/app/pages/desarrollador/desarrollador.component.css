@@ -1,0 +1,81 @@
+.developer-page {
+  min-height: 80vh;
+  display: grid;
+  place-items: center;
+  padding: 40px 20px;
+}
+
+.developer-card {
+  width: 100%;
+  max-width: 580px;
+  text-align: center;
+  background: var(--tarjeta);
+  padding: 45px;
+  border: 1px solid var(--borde);
+  border-radius: 22px;
+  box-shadow: 0 20px 70px #0005;
+}
+
+.developer-avatar {
+  width: 100px;
+  height: 100px;
+  display: grid;
+  place-items: center;
+  font-size: 48px;
+  background: linear-gradient(135deg, #7850ee, #3997ff);
+  border-radius: 50%;
+  margin: 0 auto 25px;
+}
+
+.developer-card h1 {
+  font-size: 25px;
+  font-weight: 800;
+  margin-top: 15px;
+}
+
+.developer-role {
+  color: var(--texto-secundario);
+}
+
+.developer-divider {
+  height: 1px;
+  background: var(--borde);
+  margin: 28px 0;
+}
+
+.developer-data {
+  text-align: left;
+  display: grid;
+  gap: 22px;
+}
+
+.developer-data > div {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.developer-data > div > span {
+  font-size: 25px;
+}
+
+.developer-data small,
+.developer-data strong {
+  display: block;
+}
+
+.developer-data small {
+  color: var(--texto-secundario);
+  margin-bottom: 5px;
+}
+
+.developer-data strong {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.developer-description {
+  color: var(--texto-secundario);
+  line-height: 1.8;
+  margin-top: 30px;
+}

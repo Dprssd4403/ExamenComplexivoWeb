@@ -1,0 +1,52 @@
+.private-main {
+  min-height: calc(100vh - 150px);
+}
+
+.private-links,
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8857ff, #3997ff);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+
+.user-name {
+  color: white;
+  font-size: 13px;
+}
+
+.logout-btn {
+  background: #302039;
+  border: 1px solid #77435e;
+  color: #ffb6c1;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+.logout-btn:hover {
+  background: #6b293b;
+}
+
+@media(max-width: 650px) {
+  .private-links {
+    order: 3;
+    width: 100%;
+  }
+
+  .user-menu {
+    margin-left: auto;
+  }
+
+  .user-name {
+    display: none;
+  }
+}

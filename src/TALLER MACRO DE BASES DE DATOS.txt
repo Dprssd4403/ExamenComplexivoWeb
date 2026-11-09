@@ -1,0 +1,226 @@
+npm install bootstrap firebase @angular/fire@latest
+npm install bootstrap firebase @angular/fire
+
+npm install bootstrap firebase @angular/fire --legacy-peer-deps
+
+npm install bootstrap firebase @angular/fire --force
+
+npx json-server --watch db.json --port 3000
+
+npx json-server db.json --port 3001
+
+Stop-Process -Id (Get-NetTCPConnection -LocalPort 3000).OwningProcess -Force
+npx json-server db.json --port 3000
+
+
+TALLER MACRO DE BASES DE DATOS
+SISTEMA DE GESTIÓN EDUTECH ACADEMY
+================================================== PARTE 1. MYSQL – BASE DE DATOS RELACIONAL
+RESTAURAR LA BASE DE DATOS MEDIANTE CONSOLA
+
+Abrir CMD o terminal y ejecutar:
+
+mysql -u root -p
+
+Para restaurar el archivo SQL:
+
+mysql -u root -p < respaldo_edutech.sql
+
+Si el archivo está en otra ubicación:
+
+mysql -u root -p < "C:\Users\Usuario\Downloads\respaldo_edutech.sql"
+
+Verificar las bases de datos:
+
+SHOW DATABASES;
+
+Seleccionar la base de datos:
+
+USE edutech;
+
+Verificar las tablas:
+
+SHOW TABLES;
+
+APLICAR REGLAS DE NEGOCIO
+
+A. CORREO ELECTRÓNICO ÚNICO PARA ESTUDIANTES
+
+ALTER TABLE estudiantes ADD CONSTRAINT uq_correo UNIQUE (correo);
+
+B. VALIDAR EL NIVEL DE LOS CURSOS
+
+ALTER TABLE cursos ADD CONSTRAINT chk_nivel CHECK (nivel IN ('Básico', 'intermedio', 'avanzado'));
+
+C. CONTROLAR EL NÚMERO DE ESTUDIANTES PERMITIDOS
+
+ALTER TABLE cursos ADD CONSTRAINT chk_cupos CHECK (numero_estudiantes BETWEEN 10 AND 60);
+
+Nota: Adaptar numero_estudiantes al nombre real de la columna de cupos de la tabla cursos. Las restricciones CHECK requieren MySQL 8.0.16 o superior para aplicarse efectivamente.
+
+CREAR LAS VISTAS
+
+A. VISTA DE ESTUDIANTES Y CURSOS
+
+CREATE VIEW vista_estudiantes_cursos AS SELECT e.nombre AS nombre_estudiante, c.nombre AS nombre_curso, m.fecha_matricula, c.nivel FROM estudiantes e INNER JOIN matriculas m ON e.id_estudiante = m.id_estudiante INNER JOIN cursos c ON m.id_curso = c.id_curso;
+
+Consultar:
+
+SELECT * FROM vista_estudiantes_cursos;
+
+B. VISTA DE CURSOS E INSTRUCTORES
+
+CREATE VIEW vista_cursos_instructores AS SELECT c.nombre AS nombre_curso, i.nombre AS nombre_instructor, i.especialidad FROM cursos c INNER JOIN instructores i ON c.id_instructor = i.id_instructor;
+
+Consultar:
+
+SELECT * FROM vista_cursos_instructores;
+
+CREAR USUARIOS Y ASIGNAR PRIVILEGIOS
+
+A. USUARIO ADMINISTRADOR
+
+CREATE USER 'administrador'@'localhost' IDENTIFIED BY 'Admin123*';
+
+GRANT ALL PRIVILEGES ON edutech.* TO 'administrador'@'localhost';
+
+B. USUARIO DE CONSULTAS
+
+CREATE USER 'consultas'@'localhost' IDENTIFIED BY 'Consulta123*';
+
+GRANT SELECT ON edutech.vista_estudiantes_cursos TO 'consultas'@'localhost';
+
+GRANT SELECT ON edutech.vista_cursos_instructores TO 'consultas'@'localhost';
+
+Actualizar privilegios:
+
+FLUSH PRIVILEGES;
+
+Verificar permisos:
+
+SHOW GRANTS FOR 'administrador'@'localhost';
+
+SHOW GRANTS FOR 'consultas'@'localhost';
+
+CREAR LOS TRIGGERS
+
+A. TRIGGER PARA ELIMINAR MATRÍCULAS CUANDO SE ELIMINE UN CURSO
+
+DELIMITER //
+
+CREATE TRIGGER eliminar_matriculas_curso BEFORE DELETE ON cursos FOR EACH ROW BEGIN
+
+DELETE FROM matriculas
+WHERE id_curso = OLD.id_curso;
+
+
+END //
+
+DELIMITER ;
+
+Explicación: Cuando se elimina un curso, el trigger elimina automáticamente todas las matrículas asociadas a ese curso.
+
+B. TRIGGER PARA REDUCIR LOS CUPOS DISPONIBLES
+
+DELIMITER //
+
+CREATE TRIGGER reducir_cupos AFTER INSERT ON matriculas FOR EACH ROW BEGIN
+
+UPDATE cursos
+SET cupos_disponibles = cupos_disponibles - 1
+WHERE id_curso = NEW.id_curso;
+
+
+END //
+
+DELIMITER ;
+
+Explicación: Cada vez que se registra una matrícula, se reduce automáticamente en uno la cantidad de cupos disponibles.
+
+IMPORTANTE: Se recomienda agregar una validación BEFORE INSERT para impedir nuevas matrículas cuando los cupos disponibles sean cero.
+
+================================================== PARTE 2. MONGODB – BASE DE DATOS NO RELACIONAL
+CREAR LA BASE DE DATOS
+
+Abrir MongoDB Shell:
+
+mongosh
+
+Crear o seleccionar la base de datos:
+
+use edutech_mongo
+
+Crear las colecciones:
+
+db.createCollection("estudiantes")
+
+db.createCollection("cursos")
+
+INSERTAR DOCUMENTOS EN LAS COLECCIONES
+
+A. COLECCIÓN ESTUDIANTES
+
+db.estudiantes.insertMany([ { _id: 1, nombre: "Carlos", apellido: "Perez", correo: "carlos@gmail.com" }, { _id: 2, nombre: "Maria", apellido: "Lopez", correo: "maria@gmail.com" }, { _id: 3, nombre: "Andres", apellido: "Gomez", correo: "andres@gmail.com" } ])
+
+B. COLECCIÓN CURSOS
+
+db.cursos.insertMany([ { _id: 101, nombre: "Bases de Datos", descripcion: "Curso de fundamentos de bases de datos SQL y NoSQL", valoraciones: [ { estudiante_id: 1, comentario: "Excelente curso, aprendí mucho.", puntuacion: 5, fecha: ISODate("2026-10-10") }, { estudiante_id: 2, comentario: "Muy buen contenido.", puntuacion: 4, fecha: ISODate("2026-10-12") } ] }, { _id: 102, nombre: "Programacion Web", descripcion: "Curso de desarrollo de aplicaciones web", valoraciones: [ { estudiante_id: 1, comentario: "Me gustaron las clases practicas.", puntuacion: 5, fecha: ISODate("2026-10-15") }, { estudiante_id: 3, comentario: "Buen curso para principiantes.", puntuacion: 4, fecha: ISODate("2026-10-18") } ] } ])
+
+================================================== PARTE 3. CONSULTAS MONGODB
+CONSULTA A: OBTENER TODAS LAS VALORACIONES DE UN CURSO ESPECÍFICO
+
+Ejemplo: consultar las valoraciones del curso Bases de Datos.
+
+db.cursos.find( { nombre: "Bases de Datos" }, { _id: 0, nombre: 1, valoraciones: 1 } )
+
+CONSULTA B: OBTENER TODOS LOS COMENTARIOS REALIZADOS POR UN ESTUDIANTE
+
+Ejemplo: consultar los comentarios del estudiante con ID 1.
+
+db.cursos.aggregate([ { 
+𝑢
+𝑛
+𝑤
+𝑖
+𝑛
+𝑑
+:
+"
+valoraciones" }, { $match: { "valoraciones.estudiante_id": 1 } }, { $project: { _id: 0, curso: "$nombre", comentario: "$valoraciones.comentario", puntuacion: "$valoraciones.puntuacion", fecha: "$valoraciones.fecha" } } ])
+
+CONSULTA C: OBTENER LOS COMENTARIOS DE UN ESTUDIANTE SOBRE TODOS LOS CURSOS EN LOS QUE ESTÁ MATRICULADO
+
+Ejemplo: el estudiante con ID 1 está matriculado en los cursos 101 y 102.
+
+db.cursos.aggregate([ { $match: { _id: { $in: [101, 102] } } }, { 
+𝑢
+𝑛
+𝑤
+𝑖
+𝑛
+𝑑
+:
+"
+valoraciones" }, { $match: { "valoraciones.estudiante_id": 1 } }, { $project: { _id: 0, curso: "$nombre", comentario: "$valoraciones.comentario", puntuacion: "$valoraciones.puntuacion", fecha: "$valoraciones.fecha" } } ])
+
+Explicación:
+
+$match: selecciona los cursos donde está matriculado el estudiante.
+
+$unwind: separa las valoraciones del arreglo.
+
+$match: filtra las valoraciones correspondientes al estudiante.
+
+$project: muestra el curso, comentario, puntuación y fecha.
+
+NOTA: Los IDs 101 y 102 son ejemplos. En una implementación real se deben obtener primero los cursos matriculados por el estudiante desde MySQL y utilizar sus identificadores correspondientes en MongoDB.
+
+================================================== PARTE 4. VERIFICACIÓN DEL EXAMEN
+
+LISTA DE ACTIVIDADES COMPLETADAS:
+
+[ ] Restaurar la base de datos desde el archivo de respaldo.
+
+[ ] Verificar las tablas restauradas.
+
+[ ] Establecer correo
